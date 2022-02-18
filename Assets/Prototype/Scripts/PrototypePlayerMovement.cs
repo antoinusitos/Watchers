@@ -6,34 +6,61 @@ namespace Prototype
     {
         public float speed = 4.0f;
 
+        public float lookAtspeed = 10.0f;
+
+        public Animator animator = null;
+
+        private Vector3 direction = Vector3.zero;
+
+        private Transform playerModel = null;
+
+        private Vector3 modelDirection = Vector3.forward;
+
         private void Start()
         {
-
+            playerModel = transform.GetChild(0);
+            modelDirection = transform.position + Vector3.forward;
         }
 
         private void Update()
         {
-            Vector3 dir = Vector3.zero;
+            direction = Vector3.zero;
 
             if(Input.GetKey(KeyCode.Z))
             {
-                dir += Vector3.forward;
+                direction += Vector3.forward;
             }
             else if (Input.GetKey(KeyCode.S))
             {
-                dir -= Vector3.forward;
+                direction -= Vector3.forward;
             }
 
             if (Input.GetKey(KeyCode.D))
             {
-                dir += Vector3.right;
+                direction += Vector3.right;
             }
             else if (Input.GetKey(KeyCode.Q))
             {
-                dir -= Vector3.right;
+                direction -= Vector3.right;
             }
 
-            transform.position += dir.normalized * Time.deltaTime * speed;
+            direction.Normalize();
+
+            if (direction != Vector3.zero)
+                animator.SetBool("Moving", true);
+            else
+                animator.SetBool("Moving", false);
+
+            transform.position += direction * Time.deltaTime * speed;
+
+            modelDirection = Vector3.Lerp(modelDirection, transform.position + direction, Time.deltaTime * lookAtspeed);
+
+            playerModel.LookAt(modelDirection);
+        }
+
+        public Vector3 GetDirection()
+        {
+            return direction;
         }
     }
 }
