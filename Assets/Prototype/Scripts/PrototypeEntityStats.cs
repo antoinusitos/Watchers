@@ -28,11 +28,22 @@ namespace Prototype
         {
             life -= amount;
             lifeValueDirty = true;
+
+            if(life <= 0)
+            {
+                Destroy(gameObject);
+            }
         }
 
         public void AddMaxLife(float amount)
         {
             maxLife += amount;
+            lifeValueDirty = true;
+        }
+
+        public void RefillFullLife()
+        {
+            life = maxLife;
             lifeValueDirty = true;
         }
     }

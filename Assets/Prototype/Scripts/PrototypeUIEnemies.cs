@@ -3,19 +3,17 @@ using UnityEngine.UI;
 
 namespace Prototype
 {
-    public class PrototypeUIManager : MonoBehaviour
+    public class PrototypeUIEnemies : MonoBehaviour
     {
-        public static PrototypeUIManager instance = null;
-
         public Slider lifeSlider = null;
         private RectTransform lifeSliderTransform = null;
 
-        public PrototypeEntityStats playerStats = null;
+        private PrototypeEntityStats entityStats = null;
 
         private void Awake()
         {
-            instance = this;
-            lifeSlider.maxValue = playerStats.GetMaxLife();
+            entityStats = GetComponent<PrototypeEntityStats>();
+            lifeSlider.maxValue = entityStats.GetMaxLife();
             lifeSlider.minValue = 0;
             lifeSlider.value = lifeSlider.maxValue;
             lifeSliderTransform = lifeSlider.GetComponent<RectTransform>();
@@ -23,12 +21,12 @@ namespace Prototype
 
         private void Update()
         {
-            if(playerStats && playerStats.lifeValueDirty)
+            if (entityStats && entityStats.lifeValueDirty)
             {
-                lifeSlider.maxValue = playerStats.GetMaxLife();
-                lifeSlider.value = playerStats.GetLife();
-                playerStats.lifeValueDirty = false;
-                Vector2 size = Vector2.one * 40;
+                lifeSlider.maxValue = entityStats.GetMaxLife();
+                lifeSlider.value = entityStats.GetLife();
+                entityStats.lifeValueDirty = false;
+                Vector2 size = Vector2.one * 25;
                 size.x = lifeSlider.maxValue;
                 lifeSliderTransform.sizeDelta = size;
             }
