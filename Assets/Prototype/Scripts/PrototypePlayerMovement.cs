@@ -16,6 +16,15 @@ namespace Prototype
 
         private Vector3 modelDirection = Vector3.forward;
 
+        private Rigidbody rigidbody = null;
+
+        private float dashForce = 1.0f;
+
+        private void Awake()
+        {
+            rigidbody = GetComponent<Rigidbody>();
+        }
+
         private void Start()
         {
             playerModel = transform.GetChild(0);
@@ -51,7 +60,7 @@ namespace Prototype
             else
                 animator.SetBool("Moving", false);
 
-            transform.position += direction * Time.deltaTime * speed;
+            rigidbody.MovePosition(rigidbody.position + direction * Time.deltaTime * speed * dashForce);
 
             modelDirection = Vector3.Lerp(modelDirection, transform.position + direction, Time.deltaTime * lookAtspeed);
 
@@ -61,6 +70,11 @@ namespace Prototype
         public Vector3 GetDirection()
         {
             return direction;
+        }
+
+        public void SetDash(float value)
+        {
+            dashForce = value;
         }
     }
 }

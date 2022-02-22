@@ -23,7 +23,6 @@ namespace Prototype
 
         private void OnTriggerEnter(Collider other)
         {
-            Debug.Log("OnTriggerEnter");
             PrototypeEntityStats prototypeEntityStats = other.GetComponent<PrototypeEntityStats>();
             if(prototypeEntityStats)
             {

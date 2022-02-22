@@ -5,6 +5,8 @@ namespace Prototype
 {
     public class PrototypeUIEnemies : MonoBehaviour
     {
+        public GameObject attackFeedbackObject = null;
+
         public Slider lifeSlider = null;
         private RectTransform lifeSliderTransform = null;
 
@@ -30,6 +32,11 @@ namespace Prototype
                 size.x = lifeSlider.maxValue;
                 lifeSliderTransform.sizeDelta = size;
             }
+        }
+
+        public void ShowAttackFeedback(bool newState)
+        {
+            attackFeedbackObject.SetActive(newState);
         }
     }
 }
