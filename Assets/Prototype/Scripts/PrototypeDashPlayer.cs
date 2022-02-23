@@ -14,20 +14,28 @@ namespace Prototype
 
         private bool isDashing = false;
 
+        private PrototypePlayerInput playerInput = null;
+
 
         private void Awake()
         {
             playerMovement = GetComponent<PrototypePlayerMovement>();
+
+            playerInput = GetComponent<PrototypePlayerInput>();
+            playerInput.playerInputs.Land.Dash.performed += _ => Dash();
         }
 
-        private void Update()
+        private void Dash()
         {
-            if (!isDashing && Input.GetKeyDown(KeyCode.Space))
+            if (!isDashing)
             {
                 playerMovement.SetDash(dashForce);
                 isDashing = true;
             }
+        }
 
+        private void Update()
+        {
             if(isDashing)
             {
                 currentDashDuration += Time.deltaTime;

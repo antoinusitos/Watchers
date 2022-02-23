@@ -8,9 +8,13 @@ namespace Prototype
 
         private PrototypeInventory inventory = null;
 
+        private PrototypePlayerInput playerInput = null;
+
         private void Awake()
         {
             inventory = GetComponent<PrototypeInventory>();
+            playerInput = GetComponent<PrototypePlayerInput>();
+            playerInput.playerInputs.Land.Interact.performed += _ => Interact();
         }
 
         public void SetInteractable(PrototypeInteractable interact)
@@ -22,16 +26,16 @@ namespace Prototype
             interactable?.interactionFeedback?.SetActive(true);
         }
 
-        private void Update()
+        private void Interact()
         {
-            if(interactable && Input.GetKeyDown(KeyCode.F))
+            if (!interactable)
+                return;
+
+            PrototypePickup pickup = (PrototypePickup)interactable;
+            if (pickup)
             {
-                PrototypePickup pickup = (PrototypePickup)interactable;
-                if (pickup)
-                {
-                    inventory.Add(pickup.ID);
-                    Destroy(pickup.gameObject);
-                }
+                inventory.Add(pickup.ID);
+                Destroy(pickup.gameObject);
             }
         }
     }

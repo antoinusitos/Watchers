@@ -7,18 +7,20 @@ namespace Prototype
     {
         private SphereCollider sphereCollider = null;
 
+        private PrototypePlayerInput playerInput = null;
+
         private void Awake()
         {
             sphereCollider = GetComponent<SphereCollider>();
             sphereCollider.enabled = false;
+
+            playerInput = GetComponentInParent<PrototypePlayerInput>();
+            playerInput.playerInputs.Land.Attack.performed += _ => TryAttack();
         }
 
-        private void Update()
+        private void TryAttack()
         {
-            if(Input.GetKeyDown(KeyCode.K))
-            {
-                StartCoroutine(Attack());
-            }
+            StartCoroutine(Attack());
         }
 
         private void OnTriggerEnter(Collider other)

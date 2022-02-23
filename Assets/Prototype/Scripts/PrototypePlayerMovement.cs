@@ -10,7 +10,7 @@ namespace Prototype
 
         public Animator animator = null;
 
-        public PlayerInputs playerInputs = null;
+        private PrototypePlayerInput playerInput = null;
 
         private Vector3 direction = Vector3.zero;
 
@@ -25,8 +25,7 @@ namespace Prototype
         private void Awake()
         {
             rigidbody = GetComponent<Rigidbody>();
-
-            playerInputs.PlayerInput.Move.performed += _ => Move();
+            playerInput = GetComponent<PrototypePlayerInput>();
         }
 
         private void Start()
@@ -35,29 +34,13 @@ namespace Prototype
             modelDirection = transform.position + Vector3.forward;
         }
 
+
         private void Update()
         {
-            direction = Vector3.zero;
+            Vector2 move = playerInput.playerInputs.Land.Move.ReadValue<Vector2>();
 
-            if(playerInputs.)
-
-            if(Input.GetKey(KeyCode.Z))
-            {
-                direction += Vector3.forward;
-            }
-            else if (Input.GetKey(KeyCode.S))
-            {
-                direction -= Vector3.forward;
-            }
-
-            if (Input.GetKey(KeyCode.D))
-            {
-                direction += Vector3.right;
-            }
-            else if (Input.GetKey(KeyCode.Q))
-            {
-                direction -= Vector3.right;
-            }
+            direction.x = move.x;
+            direction.z = move.y;
 
             direction.Normalize();
 
