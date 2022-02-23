@@ -22,10 +22,13 @@ namespace Prototype
 
         private float dashForce = 1.0f;
 
+        private PrototypePlayer prototypePlayer = null;
+
         private void Awake()
         {
             rigidbody = GetComponent<Rigidbody>();
             playerInput = GetComponent<PrototypePlayerInput>();
+            prototypePlayer = GetComponent<PrototypePlayer>();
         }
 
         private void Start()
@@ -37,23 +40,24 @@ namespace Prototype
 
         private void Update()
         {
+            if (prototypePlayer.playerState == PlayerState.ATTACKING)
+                return;
+
             Vector2 move = playerInput.playerInputs.Land.Move.ReadValue<Vector2>();
 
             direction.x = move.x;
             direction.z = move.y;
 
-            direction.Normalize();
-
-            if (direction != Vector3.zero)
-                animator.SetBool("Moving", true);
-            else
-                animator.SetBool("Moving", false);
+            animator.SetFloat("PlayerSpeed", direction.magnitude);
 
             rigidbody.MovePosition(rigidbody.position + direction * Time.deltaTime * speed * dashForce);
 
-            modelDirection = Vector3.Lerp(modelDirection, transform.position + direction, Time.deltaTime * lookAtspeed);
+            if (move != Vector2.zero)
+            {
+                modelDirection = Vector3.Lerp(modelDirection, rigidbody.position + direction, Time.deltaTime * lookAtspeed);
 
-            playerModel.LookAt(modelDirection);
+                playerModel.LookAt(modelDirection);
+            }
         }
 
         public Vector3 GetDirection()

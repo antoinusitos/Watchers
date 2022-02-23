@@ -9,17 +9,25 @@ namespace Prototype
 
         private PrototypePlayerInput playerInput = null;
 
+        private PrototypePlayer prototypePlayer = null;
+
         private void Awake()
         {
             sphereCollider = GetComponent<SphereCollider>();
             sphereCollider.enabled = false;
 
+            prototypePlayer = GetComponentInParent<PrototypePlayer>();
+        }
+
+        private void Start()
+        {
             playerInput = GetComponentInParent<PrototypePlayerInput>();
             playerInput.playerInputs.Land.Attack.performed += _ => TryAttack();
         }
 
         private void TryAttack()
         {
+            prototypePlayer.playerState = PlayerState.ATTACKING;
             StartCoroutine(Attack());
         }
 
@@ -38,6 +46,7 @@ namespace Prototype
             sphereCollider.enabled = true;
             yield return new WaitForSeconds(0.5f);
             sphereCollider.enabled = false;
+            prototypePlayer.playerState = PlayerState.IDLE;
         }
     }
 }

@@ -19,5 +19,14 @@ namespace Prototype
                 playerInteraction.SetInteractable(interactable);
             }
         }
+
+        private void OnTriggerExit(Collider other)
+        {
+            PrototypeInteractable interactable = other.GetComponent<PrototypeInteractable>();
+            if (interactable && playerInteraction)
+            {
+                playerInteraction.RemoveInteractable(interactable);
+            }
+        }
     }
 }

@@ -20,7 +20,10 @@ namespace Prototype
         private void Awake()
         {
             playerMovement = GetComponent<PrototypePlayerMovement>();
+        }
 
+        private void Start()
+        {
             playerInput = GetComponent<PrototypePlayerInput>();
             playerInput.playerInputs.Land.Dash.performed += _ => Dash();
         }
