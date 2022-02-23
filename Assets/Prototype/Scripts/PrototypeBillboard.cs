@@ -4,9 +4,13 @@ namespace Prototype
 {
     public class PrototypeBillboard : MonoBehaviour
     {
-        private void Update()
+        private RectTransform rect = null;
+
+
+        private void Awake()
         {
-            transform.LookAt(Camera.main.transform);
+            rect = GetComponent<RectTransform>();
+            rect.rotation = Quaternion.Euler(-70, -180, 0);
         }
     }
 }

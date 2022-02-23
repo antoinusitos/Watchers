@@ -10,6 +10,8 @@ namespace Prototype
 
         public Animator animator = null;
 
+        public PlayerInputs playerInputs = null;
+
         private Vector3 direction = Vector3.zero;
 
         private Transform playerModel = null;
@@ -23,6 +25,8 @@ namespace Prototype
         private void Awake()
         {
             rigidbody = GetComponent<Rigidbody>();
+
+            playerInputs.PlayerInput.Move.performed += _ => Move();
         }
 
         private void Start()
@@ -34,6 +38,8 @@ namespace Prototype
         private void Update()
         {
             direction = Vector3.zero;
+
+            if(playerInputs.)
 
             if(Input.GetKey(KeyCode.Z))
             {
