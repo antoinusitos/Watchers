@@ -24,6 +24,8 @@ namespace Prototype
 
         private bool stopDialogue = false;
 
+        private PrototypeAI currentAI = null;
+
         private void Awake()
         {
             instance = this;
@@ -44,7 +46,7 @@ namespace Prototype
             skip = true;
         }
 
-        public void LaunchDialogue(int ID)
+        public void LaunchDialogue(int ID, PrototypeAI prototypeAI)
         {
             if (isInDialog)
                 return;
@@ -52,7 +54,23 @@ namespace Prototype
             if (dialogCoroutine != null)
                 StopCoroutine(dialogCoroutine);
 
+            currentAI = prototypeAI;
+
             dialogCoroutine = StartCoroutine(CoroutineLaunchDialogue(ID));
+        }
+
+        private void HandleEvent(string text)
+        {
+            string[] splits = text.Split(new string[] { "EVENTS:" }, System.StringSplitOptions.None);
+            int eventID = int.Parse(splits[1]);
+            for (int e = 0; e < currentAI.dialogEvent.Count; e++)
+            {
+                if (currentAI.dialogEvent[e].ID == eventID)
+                {
+                    currentAI.dialogEvent[e].events.Invoke();
+                    break;
+                }
+            }
         }
 
         public IEnumerator CoroutineLaunchDialogue(int ID)
@@ -72,6 +90,13 @@ namespace Prototype
                         yield break;
                     }
 
+                    if (dialogue.texts[i].text.Contains("EVENTS:"))
+                    {
+                        HandleEvent(dialogue.texts[i].text);
+                        yield return new WaitForSeconds(dialogue.texts[i].time);
+                        continue;
+                    }
+
                     skip = false;
                     dialogText.text = dialogue.texts[i].text;
                     while (timer < dialogue.texts[i].time)
@@ -86,7 +111,6 @@ namespace Prototype
                         if (skip)
                         {
                             skip = false;
-                            timer = dialogue.texts[i].time;
                             break;
                         }
 
@@ -99,6 +123,7 @@ namespace Prototype
                         stopDialogue = false;
                         break;
                     }
+                    dialogText.text = "";
                 }
                 dialogText.text = "";
                 dialogPanel.SetActive(false);

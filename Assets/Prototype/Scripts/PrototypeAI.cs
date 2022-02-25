@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Prototype
@@ -5,6 +6,8 @@ namespace Prototype
     public class PrototypeAI : PrototypeInteractable
     {
         public int dialogueID = -1;
+
+        public List<DialogEvent> dialogEvent = new List<DialogEvent>();
 
         private void Awake()
         {
@@ -15,8 +18,7 @@ namespace Prototype
         {
             base.Execute();
 
-            Debug.Log("Execute PrototypeAI");
-            PrototypeDialogueManager.instance.LaunchDialogue(dialogueID);
+            PrototypeDialogueManager.instance.LaunchDialogue(dialogueID, this);
         }
 
         private void OnTriggerEnter(Collider other)

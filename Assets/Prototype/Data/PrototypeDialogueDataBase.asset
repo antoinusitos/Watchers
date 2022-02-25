@@ -19,5 +19,7 @@ MonoBehaviour:
       time: 3
     - text: I thought the Watchers was only a myth
       time: 3
+    - text: EVENTS:0
+      time: 2
     - text: ah ah ah ah ah
       time: 3
