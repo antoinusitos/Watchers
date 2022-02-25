@@ -47,7 +47,7 @@ namespace Prototype
             if (!interactable)
                 return;
 
-            if (interactable.GetType() == typeof(PrototypeItem))
+            if (interactable.GetType() == typeof(PrototypePickup))
             {
                 PrototypePickup pickup = (PrototypePickup)interactable;
                 inventory.Add(pickup.ID);

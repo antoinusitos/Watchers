@@ -20,6 +20,8 @@ namespace Prototype
 
         public PrototypeObjectDataBase dataBase = null;
 
+        private PrototypePlayerInput playerInput = null;
+
         private void Awake()
         {
             instance = this;
@@ -27,6 +29,17 @@ namespace Prototype
             lifeSlider.minValue = 0;
             lifeSlider.value = lifeSlider.maxValue;
             lifeSliderTransform = lifeSlider.GetComponent<RectTransform>();
+        }
+
+        private void Start()
+        {
+            playerInput = FindObjectOfType<PrototypePlayerInput>();
+            playerInput.playerInputs.Land.Inventory.performed += _ => Switch();
+        }
+
+        private void Switch()
+        {
+            PrototypeInventoryUIManager.instance.Switch();
         }
 
         private void Update()

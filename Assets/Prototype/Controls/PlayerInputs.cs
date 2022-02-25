@@ -62,6 +62,15 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Inventory"",
+                    ""type"": ""Button"",
+                    ""id"": ""a0bea0b9-227c-43a0-889d-72c9c9865d7e"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -262,6 +271,28 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""action"": ""Attack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3e97fbda-1f5e-4a74-aead-2f4146e5dc8c"",
+                    ""path"": ""<Keyboard>/i"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Desktop"",
+                    ""action"": ""Inventory"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f41bd923-3494-4930-9baa-949184575242"",
+                    ""path"": ""<Gamepad>/select"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Desktop"",
+                    ""action"": ""Inventory"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -296,6 +327,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         m_Land_Interact = m_Land.FindAction("Interact", throwIfNotFound: true);
         m_Land_Dash = m_Land.FindAction("Dash", throwIfNotFound: true);
         m_Land_Attack = m_Land.FindAction("Attack", throwIfNotFound: true);
+        m_Land_Inventory = m_Land.FindAction("Inventory", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -359,6 +391,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
     private readonly InputAction m_Land_Interact;
     private readonly InputAction m_Land_Dash;
     private readonly InputAction m_Land_Attack;
+    private readonly InputAction m_Land_Inventory;
     public struct LandActions
     {
         private @PlayerInputs m_Wrapper;
@@ -367,6 +400,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         public InputAction @Interact => m_Wrapper.m_Land_Interact;
         public InputAction @Dash => m_Wrapper.m_Land_Dash;
         public InputAction @Attack => m_Wrapper.m_Land_Attack;
+        public InputAction @Inventory => m_Wrapper.m_Land_Inventory;
         public InputActionMap Get() { return m_Wrapper.m_Land; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -388,6 +422,9 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 @Attack.started -= m_Wrapper.m_LandActionsCallbackInterface.OnAttack;
                 @Attack.performed -= m_Wrapper.m_LandActionsCallbackInterface.OnAttack;
                 @Attack.canceled -= m_Wrapper.m_LandActionsCallbackInterface.OnAttack;
+                @Inventory.started -= m_Wrapper.m_LandActionsCallbackInterface.OnInventory;
+                @Inventory.performed -= m_Wrapper.m_LandActionsCallbackInterface.OnInventory;
+                @Inventory.canceled -= m_Wrapper.m_LandActionsCallbackInterface.OnInventory;
             }
             m_Wrapper.m_LandActionsCallbackInterface = instance;
             if (instance != null)
@@ -404,6 +441,9 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 @Attack.started += instance.OnAttack;
                 @Attack.performed += instance.OnAttack;
                 @Attack.canceled += instance.OnAttack;
+                @Inventory.started += instance.OnInventory;
+                @Inventory.performed += instance.OnInventory;
+                @Inventory.canceled += instance.OnInventory;
             }
         }
     }
@@ -423,5 +463,6 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         void OnInteract(InputAction.CallbackContext context);
         void OnDash(InputAction.CallbackContext context);
         void OnAttack(InputAction.CallbackContext context);
+        void OnInventory(InputAction.CallbackContext context);
     }
 }

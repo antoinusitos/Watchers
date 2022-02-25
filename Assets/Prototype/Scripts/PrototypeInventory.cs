@@ -7,9 +7,16 @@ namespace Prototype
     {
         public List<PrototypeItem> inventory = new List<PrototypeItem>();
 
+        public int gold = 100;
+
         public void Add(int id)
         {
             inventory.Add(new PrototypeItem() { ID = id });
+        }
+
+        public List<PrototypeItem> GetItems()
+        {
+            return inventory;
         }
     }
 }
