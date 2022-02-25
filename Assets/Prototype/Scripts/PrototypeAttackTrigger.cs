@@ -11,6 +11,11 @@ namespace Prototype
 
         private PrototypePlayer prototypePlayer = null;
 
+        public Animator animator = null;
+
+        private bool isSwordOut = false;
+        private bool changingSwordState = false;
+
         private void Awake()
         {
             sphereCollider = GetComponent<SphereCollider>();
@@ -27,26 +32,67 @@ namespace Prototype
 
         private void TryAttack()
         {
-            prototypePlayer.playerState = PlayerState.ATTACKING;
-            StartCoroutine(Attack());
+            if (changingSwordState)
+                return;
+
+            if (!isSwordOut)
+            {
+                changingSwordState = true;
+                SetSwordOut(true);
+            }
+            else
+            {
+                prototypePlayer.playerState = PlayerState.ATTACKING;
+                StartCoroutine(Attack());
+            }
         }
 
         private void OnTriggerEnter(Collider other)
         {
             PrototypeEntityStats prototypeEntityStats = other.GetComponent<PrototypeEntityStats>();
-            if(prototypeEntityStats)
+            if (prototypeEntityStats)
             {
                 prototypeEntityStats.RemoveLife(20);
+            }
+        }
+        
+        public void SetSwordOut(bool state)
+        {
+            if (state && isSwordOut)
+                return;
+
+            StartCoroutine(SwordOut(state));
+        }
+
+
+        private IEnumerator SwordOut(bool state)
+        {
+            if (state)
+            {
+                animator.SetTrigger("SwordDraw");
+                yield return new WaitForSeconds(1.4f);
+                animator.SetBool("HasSword", true);
+                isSwordOut = true;
+                changingSwordState = false;
+            }
+            else
+            {
+                animator.SetTrigger("SwordSheat");
+                animator.SetBool("HasSword", false);
+                yield return new WaitForSeconds(1.6f);
+                isSwordOut = false;
+                changingSwordState = false;
             }
         }
 
         private IEnumerator Attack()
         {
-            yield return new WaitForSeconds(0.2f);
+            animator.SetTrigger("Attack");
             sphereCollider.enabled = true;
             yield return new WaitForSeconds(0.5f);
             sphereCollider.enabled = false;
             prototypePlayer.playerState = PlayerState.IDLE;
+
         }
     }
 }

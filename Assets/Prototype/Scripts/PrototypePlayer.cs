@@ -7,11 +7,14 @@ namespace Prototype
         IDLE,
         ATTACKING,
         MOVING,
+        ROLLING,
     }
 
 
     public class PrototypePlayer : MonoBehaviour
     {
         public PlayerState playerState = PlayerState.IDLE;
+
+        public bool isInCombat = false;
     }
 }

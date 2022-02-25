@@ -6,5 +6,6 @@ namespace Prototype
     public class PrototypeItem
     {
         public int ID = -1;
+        public string name = "";
     }
 }

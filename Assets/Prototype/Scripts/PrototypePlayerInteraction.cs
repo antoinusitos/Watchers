@@ -23,11 +23,13 @@ namespace Prototype
 
         public void SetInteractable(PrototypeInteractable interact)
         {
-            interactable?.interactionFeedback?.SetActive(false);
+            if(interactable && interactable.interactionFeedback)
+                interactable.interactionFeedback.SetActive(false);
 
             interactable = interact;
 
-            interactable?.interactionFeedback?.SetActive(true);
+            if (interactable && interactable.interactionFeedback)
+                interactable?.interactionFeedback?.SetActive(true);
         }
 
         public void RemoveInteractable(PrototypeInteractable interact)
@@ -45,11 +47,17 @@ namespace Prototype
             if (!interactable)
                 return;
 
-            PrototypePickup pickup = (PrototypePickup)interactable;
-            if (pickup)
+            if (interactable.GetType() == typeof(PrototypeItem))
             {
+                PrototypePickup pickup = (PrototypePickup)interactable;
                 inventory.Add(pickup.ID);
+                PrototypeUIManager.instance.PickupObject(pickup.ID);
                 Destroy(pickup.gameObject);
+            }
+            else if (interactable.GetType() == typeof(PrototypeAI))
+            {
+                PrototypeAI ai = (PrototypeAI)interactable;
+                ai.Execute();
             }
         }
     }

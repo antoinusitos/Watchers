@@ -6,6 +6,8 @@ namespace Prototype
     {
         public float dashForce = 2.0f;
 
+        public Animator animator = null;
+
         private PrototypePlayerMovement playerMovement = null;
 
         public float dashDuration = 0.5f;
@@ -16,10 +18,13 @@ namespace Prototype
 
         private PrototypePlayerInput playerInput = null;
 
+        private PrototypePlayer prototypePlayer = null;
+
 
         private void Awake()
         {
             playerMovement = GetComponent<PrototypePlayerMovement>();
+            prototypePlayer = GetComponent<PrototypePlayer>();
         }
 
         private void Start()

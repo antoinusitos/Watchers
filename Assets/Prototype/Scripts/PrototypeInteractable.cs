@@ -6,6 +6,8 @@ namespace Prototype
     {
         public GameObject interactionFeedback = null;
 
+        public bool normalInteraction = true;
+
         public virtual void Execute()
         {
 

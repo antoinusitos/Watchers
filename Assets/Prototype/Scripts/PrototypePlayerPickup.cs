@@ -14,7 +14,7 @@ namespace Prototype
         private void OnTriggerEnter(Collider other)
         {
             PrototypeInteractable interactable = other.GetComponent<PrototypeInteractable>();
-            if(interactable && playerInteraction)
+            if(interactable && playerInteraction && interactable.normalInteraction)
             {
                 playerInteraction.SetInteractable(interactable);
             }
@@ -23,7 +23,7 @@ namespace Prototype
         private void OnTriggerExit(Collider other)
         {
             PrototypeInteractable interactable = other.GetComponent<PrototypeInteractable>();
-            if (interactable && playerInteraction)
+            if (interactable && playerInteraction && interactable.normalInteraction)
             {
                 playerInteraction.RemoveInteractable(interactable);
             }
