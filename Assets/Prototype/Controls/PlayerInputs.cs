@@ -71,6 +71,24 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""MenuRight"",
+                    ""type"": ""Button"",
+                    ""id"": ""ec9edb23-6618-432a-8b3e-c48b083f919a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""MenuLeft"",
+                    ""type"": ""Button"",
+                    ""id"": ""b897dcb4-4931-44b1-b1ac-19af5f64a7cf"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -293,6 +311,50 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""action"": ""Inventory"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""04bb60d3-fd4c-4d52-989d-8588ce1474c7"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Desktop"",
+                    ""action"": ""MenuRight"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b8e0d3e6-86c0-4110-a59c-79994c1b987e"",
+                    ""path"": ""<Gamepad>/leftStick/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Desktop"",
+                    ""action"": ""MenuRight"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""27124253-4a55-4c9e-860b-28920287e5da"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Desktop"",
+                    ""action"": ""MenuLeft"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4e4d780b-6f8c-4b8e-b9d5-3ca86e95fb63"",
+                    ""path"": ""<Gamepad>/leftStick/left"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Desktop"",
+                    ""action"": ""MenuLeft"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -328,6 +390,8 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         m_Land_Dash = m_Land.FindAction("Dash", throwIfNotFound: true);
         m_Land_Attack = m_Land.FindAction("Attack", throwIfNotFound: true);
         m_Land_Inventory = m_Land.FindAction("Inventory", throwIfNotFound: true);
+        m_Land_MenuRight = m_Land.FindAction("MenuRight", throwIfNotFound: true);
+        m_Land_MenuLeft = m_Land.FindAction("MenuLeft", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -392,6 +456,8 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
     private readonly InputAction m_Land_Dash;
     private readonly InputAction m_Land_Attack;
     private readonly InputAction m_Land_Inventory;
+    private readonly InputAction m_Land_MenuRight;
+    private readonly InputAction m_Land_MenuLeft;
     public struct LandActions
     {
         private @PlayerInputs m_Wrapper;
@@ -401,6 +467,8 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         public InputAction @Dash => m_Wrapper.m_Land_Dash;
         public InputAction @Attack => m_Wrapper.m_Land_Attack;
         public InputAction @Inventory => m_Wrapper.m_Land_Inventory;
+        public InputAction @MenuRight => m_Wrapper.m_Land_MenuRight;
+        public InputAction @MenuLeft => m_Wrapper.m_Land_MenuLeft;
         public InputActionMap Get() { return m_Wrapper.m_Land; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -425,6 +493,12 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 @Inventory.started -= m_Wrapper.m_LandActionsCallbackInterface.OnInventory;
                 @Inventory.performed -= m_Wrapper.m_LandActionsCallbackInterface.OnInventory;
                 @Inventory.canceled -= m_Wrapper.m_LandActionsCallbackInterface.OnInventory;
+                @MenuRight.started -= m_Wrapper.m_LandActionsCallbackInterface.OnMenuRight;
+                @MenuRight.performed -= m_Wrapper.m_LandActionsCallbackInterface.OnMenuRight;
+                @MenuRight.canceled -= m_Wrapper.m_LandActionsCallbackInterface.OnMenuRight;
+                @MenuLeft.started -= m_Wrapper.m_LandActionsCallbackInterface.OnMenuLeft;
+                @MenuLeft.performed -= m_Wrapper.m_LandActionsCallbackInterface.OnMenuLeft;
+                @MenuLeft.canceled -= m_Wrapper.m_LandActionsCallbackInterface.OnMenuLeft;
             }
             m_Wrapper.m_LandActionsCallbackInterface = instance;
             if (instance != null)
@@ -444,6 +518,12 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 @Inventory.started += instance.OnInventory;
                 @Inventory.performed += instance.OnInventory;
                 @Inventory.canceled += instance.OnInventory;
+                @MenuRight.started += instance.OnMenuRight;
+                @MenuRight.performed += instance.OnMenuRight;
+                @MenuRight.canceled += instance.OnMenuRight;
+                @MenuLeft.started += instance.OnMenuLeft;
+                @MenuLeft.performed += instance.OnMenuLeft;
+                @MenuLeft.canceled += instance.OnMenuLeft;
             }
         }
     }
@@ -464,5 +544,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         void OnDash(InputAction.CallbackContext context);
         void OnAttack(InputAction.CallbackContext context);
         void OnInventory(InputAction.CallbackContext context);
+        void OnMenuRight(InputAction.CallbackContext context);
+        void OnMenuLeft(InputAction.CallbackContext context);
     }
 }

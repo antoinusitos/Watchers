@@ -15,5 +15,11 @@ MonoBehaviour:
   items:
   - ID: 0
     name: Test Object
+    sprite: {fileID: 21300000, guid: e73fc42ba63d78b45b20fb2143b9066a, type: 3}
+    quantity: 1
+    itemType: 1
   - ID: 1
     name: Another Test Object
+    sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+    quantity: 1
+    itemType: 0

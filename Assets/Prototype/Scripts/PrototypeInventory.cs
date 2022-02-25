@@ -7,11 +7,15 @@ namespace Prototype
     {
         public List<PrototypeItem> inventory = new List<PrototypeItem>();
 
+        public PrototypeObjectDataBase objectDataBase = null;
+
         public int gold = 100;
 
         public void Add(int id)
         {
-            inventory.Add(new PrototypeItem() { ID = id });
+            PrototypeItem item = objectDataBase.GetItemWithID(id);
+            if(item != null)
+                inventory.Add(item);
         }
 
         public List<PrototypeItem> GetItems()

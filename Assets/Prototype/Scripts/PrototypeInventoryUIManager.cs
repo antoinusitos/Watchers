@@ -20,9 +20,48 @@ namespace Prototype
 
         public GameObject itemsPrefab = null;
 
+        private const string goldString = "Gold :";
+
+        private PrototypePlayerInput playerInput = null;
+
+        private ItemType currentItemType = ItemType.CLOTH;
+
+        public Text categoryText = null;
+
         private void Awake()
         {
             instance = this;
+        }
+
+        private void Start()
+        {
+            playerInput = FindObjectOfType<PrototypePlayerInput>();
+            playerInput.playerInputs.Land.MenuRight.performed += _ => MoveRight();
+            playerInput.playerInputs.Land.MenuLeft.performed += _ => MoveLeft();
+        }
+        private void MoveRight()
+        {
+            if (!isOpen)
+                return;
+
+            currentItemType++;
+
+            if (currentItemType >= ItemType.SIZE)
+                currentItemType = 0;
+
+            ShowItemsOfType(currentItemType);
+        }
+
+        private void MoveLeft()
+        {
+            if (!isOpen)
+                return;
+
+            currentItemType--;
+            if (currentItemType < 0)
+                currentItemType = ItemType.SIZE-1;
+
+            ShowItemsOfType(currentItemType);
         }
 
         public void Switch()
@@ -51,9 +90,16 @@ namespace Prototype
 
         private void Refresh()
         {
-            goldText.text = "Gold : " + playerInventory.gold;
+            goldText.text = goldString + playerInventory.gold;
 
-            for(int i = 0; i < itemsPanel.childCount; i++)
+            ShowItemsOfType(ItemType.CLOTH);
+        }
+
+        private void ShowItemsOfType(ItemType itemType)
+        {
+            categoryText.text = itemType.ToString();
+
+            for (int i = 0; i < itemsPanel.childCount; i++)
             {
                 Destroy(itemsPanel.GetChild(i).gameObject);
             }
@@ -62,7 +108,12 @@ namespace Prototype
 
             for (int i = 0; i < items.Count; i++)
             {
-                Instantiate(itemsPrefab, itemsPanel);
+                if (items[i].itemType != itemType)
+                    continue;
+
+                Transform go = Instantiate(itemsPrefab, itemsPanel).transform;
+                go.GetChild(0).GetComponent<Image>().sprite = items[i].sprite;
+                go.GetComponentInChildren<Text>().text = items[i].quantity.ToString();
             }
         }
     }
