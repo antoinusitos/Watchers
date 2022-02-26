@@ -43,6 +43,8 @@ namespace Prototype
             if (!isInDialog)
                 return;
 
+            Debug.Log("dial 1");
+
             skip = true;
         }
 
@@ -80,6 +82,7 @@ namespace Prototype
             stopDialogue = false;
             if (dialogue != null)
             {
+                Debug.Log("dial");
                 isInDialog = true;
                 dialogPanel.SetActive(true);
                 for (int i = 0; i < dialogue.texts.Count; i++)
