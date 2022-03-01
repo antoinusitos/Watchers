@@ -26,6 +26,8 @@ namespace Prototype
 
         private PrototypeAI currentAI = null;
 
+        private bool preventSkip = true;
+
         private void Awake()
         {
             instance = this;
@@ -43,7 +45,11 @@ namespace Prototype
             if (!isInDialog)
                 return;
 
-            Debug.Log("dial 1");
+            if (preventSkip)
+            {
+                preventSkip = false;
+                return;
+            }
 
             skip = true;
         }
@@ -77,12 +83,13 @@ namespace Prototype
 
         public IEnumerator CoroutineLaunchDialogue(int ID)
         {
+            preventSkip = true;
+
             Dialogue dialogue = prototypeDialogueDataBase.GetDialogueWithID(ID);
             float timer = 0;
             stopDialogue = false;
             if (dialogue != null)
             {
-                Debug.Log("dial");
                 isInDialog = true;
                 dialogPanel.SetActive(true);
                 for (int i = 0; i < dialogue.texts.Count; i++)

@@ -22,6 +22,11 @@ namespace Prototype
 
         private PrototypePlayerInput playerInput = null;
 
+        public GameObject pickupPanelHigh = null;
+        public Text pickupTextHigh = null;
+        private Coroutine pickupHighCoroutine = null;
+        private bool waitingToCloseHight = false;
+
         private void Awake()
         {
             instance = this;
@@ -35,6 +40,7 @@ namespace Prototype
         {
             playerInput = FindObjectOfType<PrototypePlayerInput>();
             playerInput.playerInputs.Land.Inventory.performed += _ => Switch();
+            playerInput.playerInputs.Land.Interact.performed += _ => ClosePickupHigh();
         }
 
         private void Switch()
@@ -55,6 +61,15 @@ namespace Prototype
             }
         }
 
+        private void ClosePickupHigh()
+        {
+            if (!waitingToCloseHight)
+                return;
+
+            waitingToCloseHight = false;
+            pickupPanelHigh.SetActive(false);
+        }
+
         public void PickupObject(int ID)
         {
             PrototypeItem item = dataBase.GetItemWithID(ID);
@@ -64,13 +79,27 @@ namespace Prototype
                 return;
             }
 
-            pickupText.text = item.name;
-            if(pickupCoroutine != null)
+            if (item.itemImportance == ItemImportance.LOW)
             {
-                StopCoroutine(pickupCoroutine);
-                pickupPanel.SetActive(false);
+                pickupText.text = item.name;
+
+                if (pickupCoroutine != null)
+                {
+                    StopCoroutine(pickupCoroutine);
+                    pickupPanel.SetActive(false);
+                }
+                pickupCoroutine = StartCoroutine("PickUp");
             }
-            pickupCoroutine = StartCoroutine("PickUp");
+            else
+            {
+                pickupTextHigh.text = item.name;
+                if(pickupHighCoroutine != null)
+                {
+                    StopCoroutine(pickupHighCoroutine);
+                    pickupPanelHigh.SetActive(false);
+                }
+                pickupHighCoroutine = StartCoroutine("PickUpHigh");
+            }
         }
 
         private IEnumerator PickUp()
@@ -79,6 +108,13 @@ namespace Prototype
             pickupPanel.SetActive(true);
             yield return new WaitForSeconds(dislayPickup);
             pickupPanel.SetActive(false);
+        }
+
+        private IEnumerator PickUpHigh()
+        {
+            yield return new WaitForSeconds(0.1f);
+            pickupPanelHigh.SetActive(true);
+            waitingToCloseHight = true;
         }
     }
 }
