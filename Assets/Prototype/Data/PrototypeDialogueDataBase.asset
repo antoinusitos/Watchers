@@ -15,11 +15,11 @@ MonoBehaviour:
   dialogues:
   - ID: 0
     texts:
-    - text: Oh.. You are one them right ?
+    - textID: 0
       time: 3
-    - text: I thought the Watchers was only a myth
+    - textID: 1
       time: 3
-    - text: EVENTS:0
+    - textID: 0
       time: 2
-    - text: ah ah ah ah ah
+    - textID: 2
       time: 3

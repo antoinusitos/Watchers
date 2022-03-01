@@ -32,7 +32,7 @@ namespace Prototype
     [System.Serializable]
     public class DialogText
     {
-        public string text;
+        public int textID;
         public float time;
     }
 

@@ -100,15 +100,15 @@ namespace Prototype
                         yield break;
                     }
 
-                    if (dialogue.texts[i].text.Contains("EVENTS:"))
+                    /*if (dialogue.texts[i].textID == 0)
                     {
                         HandleEvent(dialogue.texts[i].text);
                         yield return new WaitForSeconds(dialogue.texts[i].time);
                         continue;
-                    }
+                    }*/
 
                     skip = false;
-                    dialogText.text = dialogue.texts[i].text;
+                    dialogText.text = PrototypeTraductionManager.instance.GetText(dialogue.texts[i].textID);
                     while (timer < dialogue.texts[i].time)
                     {
                         timer += Time.deltaTime;
