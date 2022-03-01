@@ -26,6 +26,7 @@ namespace Prototype
         public Text pickupTextHigh = null;
         private Coroutine pickupHighCoroutine = null;
         private bool waitingToCloseHight = false;
+        private bool justCloseHight = false;
 
         private void Awake()
         {
@@ -67,7 +68,23 @@ namespace Prototype
                 return;
 
             waitingToCloseHight = false;
+            justCloseHight = true;
             pickupPanelHigh.SetActive(false);
+        }
+
+        public bool GetWaitingToCloseHight()
+        {
+            return waitingToCloseHight;
+        }
+
+        public bool GetJustCloseHight()
+        {
+            return justCloseHight;
+        }
+
+        public void ResetJustCloseHight()
+        {
+            justCloseHight = false;
         }
 
         public void PickupObject(int ID)

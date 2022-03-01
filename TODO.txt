@@ -1,1 +1,0 @@
-Handle dialog event with the new traduction system

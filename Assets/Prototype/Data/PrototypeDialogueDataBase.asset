@@ -15,11 +15,15 @@ MonoBehaviour:
   dialogues:
   - ID: 0
     texts:
-    - textID: 0
+    - isEvent: 0
+      textID: 0
       time: 3
-    - textID: 1
+    - isEvent: 0
+      textID: 1
       time: 3
-    - textID: 0
+    - isEvent: 1
+      textID: 0
       time: 2
-    - textID: 2
+    - isEvent: 0
+      textID: 2
       time: 3

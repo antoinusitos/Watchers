@@ -32,6 +32,7 @@ namespace Prototype
     [System.Serializable]
     public class DialogText
     {
+        public bool isEvent = false;
         public int textID;
         public float time;
     }

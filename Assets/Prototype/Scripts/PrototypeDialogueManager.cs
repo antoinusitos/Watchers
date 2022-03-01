@@ -67,13 +67,11 @@ namespace Prototype
             dialogCoroutine = StartCoroutine(CoroutineLaunchDialogue(ID));
         }
 
-        private void HandleEvent(string text)
+        private void HandleEvent(int textID)
         {
-            string[] splits = text.Split(new string[] { "EVENTS:" }, System.StringSplitOptions.None);
-            int eventID = int.Parse(splits[1]);
             for (int e = 0; e < currentAI.dialogEvent.Count; e++)
             {
-                if (currentAI.dialogEvent[e].ID == eventID)
+                if (currentAI.dialogEvent[e].ID == textID)
                 {
                     currentAI.dialogEvent[e].events.Invoke();
                     break;
@@ -100,12 +98,25 @@ namespace Prototype
                         yield break;
                     }
 
-                    /*if (dialogue.texts[i].textID == 0)
+                    if (dialogue.texts[i].isEvent)
                     {
-                        HandleEvent(dialogue.texts[i].text);
-                        yield return new WaitForSeconds(dialogue.texts[i].time);
+                        HandleEvent(dialogue.texts[i].textID);
+                        yield return new WaitForSeconds(0.11f);
+                        if (PrototypeUIManager.instance.GetWaitingToCloseHight())
+                        {
+                            while(!PrototypeUIManager.instance.GetJustCloseHight())
+                            {
+                                yield return null;
+                            }
+                            preventSkip = true;
+                            PrototypeUIManager.instance.ResetJustCloseHight();
+                        }
+                        else
+                        {
+                            yield return new WaitForSeconds(dialogue.texts[i].time);
+                        }
                         continue;
-                    }*/
+                    }
 
                     skip = false;
                     dialogText.text = PrototypeTraductionManager.instance.GetText(dialogue.texts[i].textID);
