@@ -7,6 +7,7 @@ namespace Prototype
         public int damage = 5;
         public float attackRate = 2.0f;
         public float attackTotalTime = 2.6f;
+        public float lookAtSpeed = 2.0f;
         public float preparationTime = 1.2f;
 
         public PrototypeCollectEntities prototypeCollectEntities = null;
@@ -21,36 +22,17 @@ namespace Prototype
         private bool canAttack = true;
         private bool attacking = false;
 
-        private PrototypeEntityStats playerStats = null;
+        public PrototypeCollectPlayer prototypeCollectPlayer = null;
+
+        private Transform selfTransform = null;
+
+        private Vector3 positionTarget = Vector3.zero;
 
         private void Awake()
         {
+            selfTransform = transform;
             prototypeUIEnemies = GetComponent<PrototypeUIEnemies>();
-        }
-
-        private void OnTriggerEnter(Collider other)
-        {
-            if (other.tag != "Player")
-                return;
-
-            PrototypeEntityStats stats = other.GetComponent<PrototypeEntityStats>();
-            if(stats != null)
-            {
-                playerStats = stats;
-            }
-        }
-
-        private void OnTriggerExit(Collider other)
-        {
-            if (other.tag != "Player")
-                return;
-
-            PrototypeEntityStats stats = other.GetComponent<PrototypeEntityStats>();
-            if (stats != null)
-            {
-                playerStats = null;
-            }
-        }
+        }       
 
         private void Update()
         {
@@ -64,7 +46,15 @@ namespace Prototype
                 }
             }
 
-            if(playerStats && canAttack && !attacking)
+            if(prototypeCollectPlayer.playerStats && !attacking)
+            {
+                Vector3 pos = prototypeCollectPlayer.playerStats.transform.position;
+                pos.y = selfTransform.position.y;
+                positionTarget = Vector3.MoveTowards(positionTarget, pos, Time.deltaTime * lookAtSpeed);
+                transform.LookAt(positionTarget);
+            }
+
+            if(prototypeCollectPlayer.playerStats && canAttack && !attacking)
             {
                 attacking = true;
                 prototypeUIEnemies.ShowAttackFeedback(true);

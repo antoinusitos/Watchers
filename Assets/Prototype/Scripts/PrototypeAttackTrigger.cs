@@ -16,6 +16,8 @@ namespace Prototype
         private bool isSwordOut = false;
         private bool changingSwordState = false;
 
+        private bool isAttacking = false;
+
         private void Awake()
         {
             sphereCollider = GetComponent<SphereCollider>();
@@ -35,6 +37,9 @@ namespace Prototype
             if (changingSwordState)
                 return;
 
+            if (isAttacking)
+                return;
+
             if (!isSwordOut)
             {
                 changingSwordState = true;
@@ -42,6 +47,8 @@ namespace Prototype
             }
             else
             {
+                isAttacking = true;
+
                 prototypePlayer.playerState = PlayerState.ATTACKING;
                 StartCoroutine(Attack());
             }
@@ -92,6 +99,7 @@ namespace Prototype
             yield return new WaitForSeconds(0.5f);
             sphereCollider.enabled = false;
             prototypePlayer.playerState = PlayerState.IDLE;
+            isAttacking = false;
 
         }
     }
