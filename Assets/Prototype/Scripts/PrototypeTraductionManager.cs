@@ -33,7 +33,7 @@ namespace Prototype
 
         private void ReadTraductions()
         {
-            string path = Application.dataPath + "/Prototype/Data/Watchers_Trad.csv";
+            string path = Application.dataPath + "/Prototype/Data/Watchers_Trad.txt";
 
             // This text is added only once to the file.
             if (!File.Exists(path))
@@ -45,7 +45,7 @@ namespace Prototype
             string[] readText = File.ReadAllLines(path);
             foreach (string s in readText)
             {
-                string[] split = s.Split(',');
+                string[] split = s.Split(';');
                 int id;
                 if (int.TryParse(split[0], out id))
                 {

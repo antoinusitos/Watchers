@@ -8,6 +8,7 @@ namespace Prototype
         ATTACKING,
         MOVING,
         ROLLING,
+        LADDER
     }
 
 
@@ -16,5 +17,7 @@ namespace Prototype
         public PlayerState playerState = PlayerState.IDLE;
 
         public bool isInCombat = false;
+
+        public Animator animator = null;
     }
 }

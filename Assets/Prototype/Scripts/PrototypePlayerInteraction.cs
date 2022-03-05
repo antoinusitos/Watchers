@@ -59,6 +59,10 @@ namespace Prototype
                 PrototypeAI ai = (PrototypeAI)interactable;
                 ai.Execute();
             }
+            else
+            {
+                interactable.Execute();
+            }
         }
     }
 }

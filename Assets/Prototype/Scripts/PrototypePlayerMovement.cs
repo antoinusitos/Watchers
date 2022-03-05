@@ -5,6 +5,7 @@ namespace Prototype
     public class PrototypePlayerMovement : MonoBehaviour
     {
         public float speed = 4.0f;
+        public float ladderSpeed = 20.0f;
 
         public float lookAtspeed = 10.0f;
 
@@ -47,6 +48,12 @@ namespace Prototype
 
             direction.x = move.x;
             direction.z = move.y;
+
+            if(prototypePlayer.playerState == PlayerState.LADDER)
+            {
+                rigidbody.MovePosition(rigidbody.position + Vector3.up * direction.z * Time.deltaTime * ladderSpeed);
+                return;
+            }
 
             animator.SetFloat("PlayerSpeed", direction.magnitude);
 
