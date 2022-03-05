@@ -20,6 +20,7 @@ namespace Prototype
         {
             localTransform = transform;
             player = prototypePlayerMovement.transform;
+            localTransform.position = player.position + offset + prototypePlayerMovement.GetDirection() * predictionOnPlayerMovementForce;
         }
 
         private void Update()

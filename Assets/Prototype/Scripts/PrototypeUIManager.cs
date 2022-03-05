@@ -28,6 +28,11 @@ namespace Prototype
         private bool waitingToCloseHight = false;
         private bool justCloseHight = false;
 
+        public GameObject locationPanel = null;
+        public Text locationText = null;
+        private Coroutine showTextCoroutine = null;
+        private const float locationShowTime = 2.0f;
+
         private void Awake()
         {
             instance = this;
@@ -132,6 +137,22 @@ namespace Prototype
             yield return new WaitForSeconds(0.1f);
             pickupPanelHigh.SetActive(true);
             waitingToCloseHight = true;
+        }
+
+        public void ShowLocation(string location)
+        {
+            if (showTextCoroutine != null)
+                StopCoroutine(showTextCoroutine);
+
+            showTextCoroutine = StartCoroutine(ShowLocationAnimation(location));
+        }
+
+        private IEnumerator ShowLocationAnimation(string location)
+        {
+            locationPanel.SetActive(true);
+            locationText.text = location;
+            yield return new WaitForSeconds(locationShowTime);
+            locationPanel.SetActive(false);
         }
     }
 }
