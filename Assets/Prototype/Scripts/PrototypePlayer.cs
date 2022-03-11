@@ -8,7 +8,8 @@ namespace Prototype
         ATTACKING,
         MOVING,
         ROLLING,
-        LADDER
+        LADDER,
+        UI
     }
 
 

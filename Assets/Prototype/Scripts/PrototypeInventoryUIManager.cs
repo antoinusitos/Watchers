@@ -20,17 +20,24 @@ namespace Prototype
 
         public GameObject itemsPrefab = null;
 
-        private const string goldString = "Gold :";
+        private const string goldString = ": ";
 
         private PrototypePlayerInput playerInput = null;
 
-        private ItemType currentItemType = ItemType.CLOTH;
+        private ItemType currentItemType = ItemType.WEAPON;
 
         public Text categoryText = null;
+
+        private PrototypePlayer player = null;
+
+        public Image[] categoryImages = null;
+
+        private Color transparentColor = Color.white;
 
         private void Awake()
         {
             instance = this;
+            transparentColor.a = 0;
         }
 
         private void Start()
@@ -38,16 +45,21 @@ namespace Prototype
             playerInput = FindObjectOfType<PrototypePlayerInput>();
             playerInput.playerInputs.Land.MenuRight.performed += _ => MoveRight();
             playerInput.playerInputs.Land.MenuLeft.performed += _ => MoveLeft();
+            player = playerInput.GetComponent<PrototypePlayer>();
         }
         private void MoveRight()
         {
             if (!isOpen)
                 return;
 
+            categoryImages[(int)currentItemType].color = transparentColor;
+
             currentItemType++;
 
             if (currentItemType >= ItemType.SIZE)
                 currentItemType = 0;
+
+            categoryImages[(int)currentItemType].color = Color.white;
 
             ShowItemsOfType(currentItemType);
         }
@@ -57,9 +69,13 @@ namespace Prototype
             if (!isOpen)
                 return;
 
+            categoryImages[(int)currentItemType].color = transparentColor;
+
             currentItemType--;
             if (currentItemType < 0)
                 currentItemType = ItemType.SIZE-1;
+
+            categoryImages[(int)currentItemType].color = Color.white;
 
             ShowItemsOfType(currentItemType);
         }
@@ -80,19 +96,21 @@ namespace Prototype
         public void Open()
         {
             inventoryWindow.SetActive(true);
+            player.playerState = PlayerState.UI;
             Refresh();
         }
 
         public void Close()
         {
             inventoryWindow.SetActive(false);
+            player.playerState = PlayerState.IDLE;
         }
 
-        private void Refresh()
+        public void Refresh()
         {
             goldText.text = goldString + playerInventory.gold;
 
-            ShowItemsOfType(ItemType.CLOTH);
+            ShowItemsOfType(ItemType.WEAPON);
         }
 
         private void ShowItemsOfType(ItemType itemType)

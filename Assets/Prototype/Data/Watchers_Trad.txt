@@ -99,7 +99,7 @@
 97;;
 98;;
 99;;
-100;"""Castle of the Watchers""";
+100;"""Castle of the Watchers""";"""Chateau des Watchers"""
 101;;
 102;;
 103;;
@@ -109,9 +109,9 @@
 107;;
 108;;
 109;;
-110;;
-111;;
-112;;
+110;"""Inventory""";"""Inventaire"""
+111;"""Craft""";"""Fabrication"""
+112;"""Gold""";"""Or"""
 113;;
 114;;
 115;;

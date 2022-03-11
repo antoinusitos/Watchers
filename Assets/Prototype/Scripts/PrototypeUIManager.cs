@@ -33,6 +33,10 @@ namespace Prototype
         private Coroutine showTextCoroutine = null;
         private const float locationShowTime = 2.0f;
 
+        private bool isInInventory = true;
+        public GameObject inventoryGameObject = null;
+        public GameObject craftGameObject = null;
+
         private void Awake()
         {
             instance = this;
@@ -47,6 +51,9 @@ namespace Prototype
             playerInput = FindObjectOfType<PrototypePlayerInput>();
             playerInput.playerInputs.Land.Inventory.performed += _ => Switch();
             playerInput.playerInputs.Land.Interact.performed += _ => ClosePickupHigh();
+
+            playerInput.playerInputs.Land.NextPage.performed += _ => NextPage();
+            playerInput.playerInputs.Land.PreviousPage.performed += _ => PreviousPage();
         }
 
         private void Switch()
@@ -92,7 +99,30 @@ namespace Prototype
             justCloseHight = false;
         }
 
-        public void PickupObject(int ID)
+        private void NextPage()
+        {
+            if (!isInInventory)
+                return;
+
+            isInInventory = false;
+
+            craftGameObject.SetActive(true);
+            inventoryGameObject.SetActive(false);
+        }
+
+        private void PreviousPage()
+        {
+            if (isInInventory)
+                return;
+
+            isInInventory = true;
+
+            craftGameObject.SetActive(false);
+            inventoryGameObject.SetActive(true);
+            PrototypeInventoryUIManager.instance.Refresh();
+        }
+
+        public void PickupObject(int ID, bool alreadySeen)
         {
             PrototypeItem item = dataBase.GetItemWithID(ID);
             if (item == null)
@@ -101,7 +131,7 @@ namespace Prototype
                 return;
             }
 
-            if (item.itemImportance == ItemImportance.LOW)
+            if (alreadySeen)
             {
                 pickupText.text = item.name;
 

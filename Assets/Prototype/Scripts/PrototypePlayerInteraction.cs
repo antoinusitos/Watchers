@@ -10,6 +10,8 @@ namespace Prototype
 
         private PrototypePlayerInput playerInput = null;
 
+        private PrototypePlayer player = null;
+
         private void Awake()
         {
             inventory = GetComponent<PrototypeInventory>();
@@ -18,6 +20,7 @@ namespace Prototype
         private void Start()
         {
             playerInput = GetComponent<PrototypePlayerInput>();
+            player = playerInput.GetComponent<PrototypePlayer>();
             playerInput.playerInputs.Land.Interact.performed += _ => Interact();
         }
 
@@ -29,7 +32,7 @@ namespace Prototype
             interactable = interact;
 
             if (interactable && interactable.interactionFeedback)
-                interactable?.interactionFeedback?.SetActive(true);
+                interactable.interactionFeedback.SetActive(true);
         }
 
         public void RemoveInteractable(PrototypeInteractable interact)
@@ -37,7 +40,13 @@ namespace Prototype
             if (interactable != interact)
                 return;
 
-            interactable?.interactionFeedback?.SetActive(false);
+            if (interactable == null)
+                return;
+
+            if (interactable.interactionFeedback == null)
+                return;
+
+            interactable.interactionFeedback.SetActive(false);
 
             interactable = null;
         }
@@ -47,11 +56,23 @@ namespace Prototype
             if (!interactable)
                 return;
 
+            if (player.playerState == PlayerState.UI)
+                return;
+
             if (interactable.GetType() == typeof(PrototypePickup))
             {
                 PrototypePickup pickup = (PrototypePickup)interactable;
                 inventory.Add(pickup.ID);
-                PrototypeUIManager.instance.PickupObject(pickup.ID);
+                bool alreadySeen = false;
+                if(inventory.objectsCollected.Contains(pickup.ID))
+                {
+                    alreadySeen = true;
+                }
+                else
+                {
+                    inventory.objectsCollected.Add(pickup.ID);
+                }
+                PrototypeUIManager.instance.PickupObject(pickup.ID, alreadySeen);
                 Destroy(pickup.gameObject);
             }
             else if (interactable.GetType() == typeof(PrototypeAI))

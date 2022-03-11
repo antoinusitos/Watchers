@@ -10,7 +10,6 @@ namespace Prototype
         public Sprite sprite = null;
         public int quantity = 1;
         public ItemType itemType = ItemType.CLOTH;
-        public ItemImportance itemImportance = ItemImportance.LOW;
     }
 
     public enum ItemType
@@ -19,13 +18,8 @@ namespace Prototype
         CLOTH,
         QUEST,
         CONSUMABLE,
+        VALUABLE,
 
         SIZE
-    }
-
-    public enum ItemImportance
-    {
-        HIGH,
-        LOW
     }
 }

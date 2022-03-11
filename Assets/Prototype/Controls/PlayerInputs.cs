@@ -89,6 +89,24 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""NextPage"",
+                    ""type"": ""Button"",
+                    ""id"": ""d517c24d-369b-402f-8b43-b0cb3914c773"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""PreviousPage"",
+                    ""type"": ""Button"",
+                    ""id"": ""9a749e0c-9aad-4132-a42b-10061845b3ef"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -106,7 +124,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 {
                     ""name"": ""up"",
                     ""id"": ""2a9e2049-678d-4a75-a171-2c4fdb0c160d"",
-                    ""path"": ""<Keyboard>/w"",
+                    ""path"": ""<Keyboard>/z"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Desktop"",
@@ -128,7 +146,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 {
                     ""name"": ""left"",
                     ""id"": ""60570bbf-b9d3-4f92-8934-0c8d9c06d950"",
-                    ""path"": ""<Keyboard>/a"",
+                    ""path"": ""<Keyboard>/q"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Desktop"",
@@ -326,7 +344,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""b8e0d3e6-86c0-4110-a59c-79994c1b987e"",
-                    ""path"": ""<Gamepad>/leftStick/right"",
+                    ""path"": ""<Gamepad>/dpad/right"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Desktop"",
@@ -337,7 +355,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""27124253-4a55-4c9e-860b-28920287e5da"",
-                    ""path"": ""<Keyboard>/a"",
+                    ""path"": ""<Keyboard>/q"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Desktop"",
@@ -348,11 +366,55 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""4e4d780b-6f8c-4b8e-b9d5-3ca86e95fb63"",
-                    ""path"": ""<Gamepad>/leftStick/left"",
+                    ""path"": ""<Gamepad>/dpad/left"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Desktop"",
                     ""action"": ""MenuLeft"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a7370f15-523b-486a-94a5-bf715233ca37"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Desktop"",
+                    ""action"": ""NextPage"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a4be0044-a73e-4ac9-8fdd-6540558d21ae"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""NextPage"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4f414601-5ff9-4456-8bbd-c593264bc85c"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Desktop"",
+                    ""action"": ""PreviousPage"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""27c667e4-b60a-47c9-afc1-b6d1dbc327f1"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PreviousPage"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -392,6 +454,8 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         m_Land_Inventory = m_Land.FindAction("Inventory", throwIfNotFound: true);
         m_Land_MenuRight = m_Land.FindAction("MenuRight", throwIfNotFound: true);
         m_Land_MenuLeft = m_Land.FindAction("MenuLeft", throwIfNotFound: true);
+        m_Land_NextPage = m_Land.FindAction("NextPage", throwIfNotFound: true);
+        m_Land_PreviousPage = m_Land.FindAction("PreviousPage", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -458,6 +522,8 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
     private readonly InputAction m_Land_Inventory;
     private readonly InputAction m_Land_MenuRight;
     private readonly InputAction m_Land_MenuLeft;
+    private readonly InputAction m_Land_NextPage;
+    private readonly InputAction m_Land_PreviousPage;
     public struct LandActions
     {
         private @PlayerInputs m_Wrapper;
@@ -469,6 +535,8 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         public InputAction @Inventory => m_Wrapper.m_Land_Inventory;
         public InputAction @MenuRight => m_Wrapper.m_Land_MenuRight;
         public InputAction @MenuLeft => m_Wrapper.m_Land_MenuLeft;
+        public InputAction @NextPage => m_Wrapper.m_Land_NextPage;
+        public InputAction @PreviousPage => m_Wrapper.m_Land_PreviousPage;
         public InputActionMap Get() { return m_Wrapper.m_Land; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -499,6 +567,12 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 @MenuLeft.started -= m_Wrapper.m_LandActionsCallbackInterface.OnMenuLeft;
                 @MenuLeft.performed -= m_Wrapper.m_LandActionsCallbackInterface.OnMenuLeft;
                 @MenuLeft.canceled -= m_Wrapper.m_LandActionsCallbackInterface.OnMenuLeft;
+                @NextPage.started -= m_Wrapper.m_LandActionsCallbackInterface.OnNextPage;
+                @NextPage.performed -= m_Wrapper.m_LandActionsCallbackInterface.OnNextPage;
+                @NextPage.canceled -= m_Wrapper.m_LandActionsCallbackInterface.OnNextPage;
+                @PreviousPage.started -= m_Wrapper.m_LandActionsCallbackInterface.OnPreviousPage;
+                @PreviousPage.performed -= m_Wrapper.m_LandActionsCallbackInterface.OnPreviousPage;
+                @PreviousPage.canceled -= m_Wrapper.m_LandActionsCallbackInterface.OnPreviousPage;
             }
             m_Wrapper.m_LandActionsCallbackInterface = instance;
             if (instance != null)
@@ -524,6 +598,12 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 @MenuLeft.started += instance.OnMenuLeft;
                 @MenuLeft.performed += instance.OnMenuLeft;
                 @MenuLeft.canceled += instance.OnMenuLeft;
+                @NextPage.started += instance.OnNextPage;
+                @NextPage.performed += instance.OnNextPage;
+                @NextPage.canceled += instance.OnNextPage;
+                @PreviousPage.started += instance.OnPreviousPage;
+                @PreviousPage.performed += instance.OnPreviousPage;
+                @PreviousPage.canceled += instance.OnPreviousPage;
             }
         }
     }
@@ -546,5 +626,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         void OnInventory(InputAction.CallbackContext context);
         void OnMenuRight(InputAction.CallbackContext context);
         void OnMenuLeft(InputAction.CallbackContext context);
+        void OnNextPage(InputAction.CallbackContext context);
+        void OnPreviousPage(InputAction.CallbackContext context);
     }
 }
