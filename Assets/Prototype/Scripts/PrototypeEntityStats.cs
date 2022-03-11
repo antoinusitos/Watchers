@@ -46,5 +46,10 @@ namespace Prototype
             life = maxLife;
             lifeValueDirty = true;
         }
+
+        public void Kill()
+        {
+            RemoveLife(maxLife);
+        }
     }
 }
