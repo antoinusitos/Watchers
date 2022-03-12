@@ -29,11 +29,11 @@
 27;;
 28;;
 29;;
-30;;
-31;;
-32;;
-33;;
-34;;
+30;"Attack";"Attaque"
+31;"Agility";"Agilite"
+32;"Defence";"Defense"
+33;"Vigor";"Vigueur"
+34;"Intelligence";"Intelligence"
 35;;
 36;;
 37;;
@@ -113,8 +113,8 @@
 111;"""Craft""";"""Fabrication"""
 112;"""Gold""";"""Or"""
 113;"""Player stats""";"""Statistiques du joueur"""
-114;;
-115;;
+114;"Game stats";"Stat du jeu"
+115;"Total Game Time";"Heure total de jeu"
 116;;
 117;;
 118;;

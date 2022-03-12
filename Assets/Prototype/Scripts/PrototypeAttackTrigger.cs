@@ -59,7 +59,7 @@ namespace Prototype
             PrototypeEntityStats prototypeEntityStats = other.GetComponent<PrototypeEntityStats>();
             if (prototypeEntityStats)
             {
-                prototypeEntityStats.RemoveLife(20);
+                prototypeEntityStats.RemoveLife(prototypePlayer.GetBaseAttackDamage() + prototypePlayer.GetAttackBonusPerLevel() * prototypePlayer.GetAttackLevel());
             }
         }
         
@@ -96,7 +96,7 @@ namespace Prototype
         {
             animator.SetTrigger("Attack");
             sphereCollider.enabled = true;
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(prototypePlayer.GetBaseAgility() - prototypePlayer.GetAgilityLevel() * prototypePlayer.GetAgilityBonusPerLevel());
             sphereCollider.enabled = false;
             prototypePlayer.playerState = PlayerState.IDLE;
             isAttacking = false;
