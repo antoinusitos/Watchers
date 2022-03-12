@@ -67,6 +67,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prototypeAttack: {fileID: 8580933580697556731}
+  prototypePlayer: {fileID: 8580933581439974680}
 --- !u!1 &734166412
 GameObject:
   m_ObjectHideFlags: 0
@@ -183,7 +184,7 @@ GameObject:
   - component: {fileID: 8580933581439974675}
   - component: {fileID: 8580933581439974676}
   - component: {fileID: 8580933581439974680}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -220,6 +221,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 4
+  ladderSpeed: 20
   lookAtspeed: 10
   animator: {fileID: 8580933581718030240}
 --- !u!136 &8580933579893269240
@@ -295,6 +297,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inventory: []
+  objectDataBase: {fileID: 11400000, guid: aef88aa815534f24196387feb1579dff, type: 2}
+  gold: 100
+  objectsCollected: 
 --- !u!114 &8580933581439974675
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -332,6 +337,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerState: 0
+  isInCombat: 0
+  animator: {fileID: 0}
 --- !u!1 &8580933580697556734
 GameObject:
   m_ObjectHideFlags: 0

@@ -6,7 +6,8 @@ namespace Prototype
     public class PrototypeItem
     {
         public int ID = -1;
-        public string name = "";
+        public int nameTradID = -1;
+        public int descTradID = -1;
         public Sprite sprite = null;
         public int quantity = 1;
         public ItemType itemType = ItemType.CLOTH;

@@ -59,6 +59,9 @@ namespace Prototype
             if (player.playerState == PlayerState.UI)
                 return;
 
+            if (player.playerState == PlayerState.INVENTORY)
+                return;
+
             if (interactable.GetType() == typeof(PrototypePickup))
             {
                 PrototypePickup pickup = (PrototypePickup)interactable;

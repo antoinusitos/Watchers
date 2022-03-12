@@ -49,10 +49,10 @@
 47;;
 48;;
 49;;
-50;;
-51;;
-52;;
-53;;
+50;"Test Object 1";"Objet test 1"
+51;"Test Desc Object 1";"Test desc objet 1"
+52;"Test Object 2";"Objet test 2""
+53;"Test Desc Object 2";"Test desc objet 2"
 54;;
 55;;
 56;;
@@ -112,7 +112,7 @@
 110;"""Inventory""";"""Inventaire"""
 111;"""Craft""";"""Fabrication"""
 112;"""Gold""";"""Or"""
-113;;
+113;"""Player stats""";"""Statistiques du joueur"""
 114;;
 115;;
 116;;

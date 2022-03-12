@@ -47,6 +47,9 @@ namespace Prototype
             if (prototypePlayer.playerState == PlayerState.UI)
                 return;
 
+            if (prototypePlayer.playerState == PlayerState.INVENTORY)
+                return;
+
             Vector2 move = playerInput.playerInputs.Land.Move.ReadValue<Vector2>();
 
             direction.x = move.x;

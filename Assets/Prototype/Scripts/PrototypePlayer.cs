@@ -9,7 +9,8 @@ namespace Prototype
         MOVING,
         ROLLING,
         LADDER,
-        UI
+        UI,
+        INVENTORY
     }
 
 

@@ -4,23 +4,13 @@ using UnityEngine.UI;
 
 namespace Prototype
 {
-    public class PrototypeInventoryUIManager : MonoBehaviour
+    public class PrototypeInventoryUIManager : PrototypeUICategory
     {
         public static PrototypeInventoryUIManager instance = null;
 
-        private bool isOpen = false;
-
-        public GameObject inventoryWindow = null;
-
-        public PrototypeInventory playerInventory = null;
-
-        public Text goldText = null;
-
         public Transform itemsPanel = null;
 
-        public GameObject itemsPrefab = null;
-
-        private const string goldString = ": ";
+        public PrototypeUIItem itemsPrefab = null;
 
         private PrototypePlayerInput playerInput = null;
 
@@ -28,11 +18,19 @@ namespace Prototype
 
         public Text categoryText = null;
 
-        private PrototypePlayer player = null;
-
         public Image[] categoryImages = null;
 
         private Color transparentColor = Color.white;
+
+        public Text itemNameText = null;
+        public Text itemDescText = null;
+
+        private List<PrototypeUIItem> prototypeUIItems = new List<PrototypeUIItem>();
+        private List<PrototypeItem> currentItems = new List<PrototypeItem>();
+
+        private bool hasMoved = false;
+
+        private int currentItemIndex = 0;
 
         private void Awake()
         {
@@ -45,8 +43,57 @@ namespace Prototype
             playerInput = FindObjectOfType<PrototypePlayerInput>();
             playerInput.playerInputs.Land.MenuRight.performed += _ => MoveRight();
             playerInput.playerInputs.Land.MenuLeft.performed += _ => MoveLeft();
-            player = playerInput.GetComponent<PrototypePlayer>();
         }
+
+        private void Update()
+        {
+            if (!isOpen)
+                return;
+
+            if (prototypeUIItems.Count <= 0)
+                return;
+
+            Vector2 move = playerInput.playerInputs.Land.Move.ReadValue<Vector2>();
+
+            if (hasMoved)
+            {
+                if (move.x == 0 && move.y == 0)
+                    hasMoved = false;
+
+                return;
+            }
+
+            if(move.x > 0)
+            {
+                prototypeUIItems[currentItemIndex].Select(false);
+                currentItemIndex++;
+                if (currentItemIndex >= currentItems.Count)
+                    currentItemIndex = 0;
+                hasMoved = true;
+                SelectItem();
+            }
+            else if (move.x < 0)
+            {
+                prototypeUIItems[currentItemIndex].Select(false);
+                currentItemIndex--;
+                if (currentItemIndex < 0)
+                    currentItemIndex = currentItems.Count - 1;
+                hasMoved = true;
+                SelectItem();
+            }
+        }
+
+        public override void Close()
+        {
+            base.Close();
+
+            categoryImages[(int)currentItemType].color = transparentColor;
+
+            currentItemType = ItemType.WEAPON;
+
+            categoryImages[(int)currentItemType].color = Color.white;
+        }
+
         private void MoveRight()
         {
             if (!isOpen)
@@ -80,59 +127,50 @@ namespace Prototype
             ShowItemsOfType(currentItemType);
         }
 
-        public void Switch()
+        public override void Refresh()
         {
-            if(isOpen)
-            {
-                Close();
-            }
-            else
-            {
-                Open();
-            }
-            isOpen = !isOpen;
-        }
-
-        public void Open()
-        {
-            inventoryWindow.SetActive(true);
-            player.playerState = PlayerState.UI;
-            Refresh();
-        }
-
-        public void Close()
-        {
-            inventoryWindow.SetActive(false);
-            player.playerState = PlayerState.IDLE;
-        }
-
-        public void Refresh()
-        {
-            goldText.text = goldString + playerInventory.gold;
+            base.Refresh();
 
             ShowItemsOfType(ItemType.WEAPON);
         }
 
         private void ShowItemsOfType(ItemType itemType)
         {
+            currentItemIndex = 0;
+
             categoryText.text = itemType.ToString();
+
+            prototypeUIItems.Clear();
 
             for (int i = 0; i < itemsPanel.childCount; i++)
             {
                 Destroy(itemsPanel.GetChild(i).gameObject);
             }
 
-            List<PrototypeItem> items = playerInventory.GetItems();
+            List<PrototypeItem> tempItemList = playerInventory.GetItems();
+            currentItems = new List<PrototypeItem>();
 
-            for (int i = 0; i < items.Count; i++)
+            for (int i = 0; i < tempItemList.Count; i++)
             {
-                if (items[i].itemType != itemType)
+                if (tempItemList[i].itemType != itemType)
                     continue;
 
-                Transform go = Instantiate(itemsPrefab, itemsPanel).transform;
-                go.GetChild(0).GetComponent<Image>().sprite = items[i].sprite;
-                go.GetComponentInChildren<Text>().text = items[i].quantity.ToString();
+                currentItems.Add(tempItemList[i]);
+                PrototypeUIItem go = Instantiate(itemsPrefab, itemsPanel);
+                go.itemImage.sprite = tempItemList[i].sprite;
+                go.quantityText.text = tempItemList[i].quantity.ToString();
+                prototypeUIItems.Add(go);
             }
+
+            if (currentItems.Count > 0)
+                SelectItem();
+        }
+
+        private void SelectItem()
+        {
+            prototypeUIItems[currentItemIndex].Select(true);
+            itemNameText.text = PrototypeTraductionManager.instance.GetText(currentItems[currentItemIndex].nameTradID);
+            itemDescText.text = PrototypeTraductionManager.instance.GetText(currentItems[currentItemIndex].descTradID);
         }
     }
 }

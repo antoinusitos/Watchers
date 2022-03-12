@@ -4,6 +4,13 @@ using UnityEngine.UI;
 
 namespace Prototype
 {
+    public enum UICategory
+    {
+        INVENTORY,
+        CRAFT,
+        PLAYERSTATS
+    }
+
     public class PrototypeUIManager : MonoBehaviour
     {
         public static PrototypeUIManager instance = null;
@@ -33,9 +40,10 @@ namespace Prototype
         private Coroutine showTextCoroutine = null;
         private const float locationShowTime = 2.0f;
 
-        private bool isInInventory = true;
-        public GameObject inventoryGameObject = null;
-        public GameObject craftGameObject = null;
+        private UICategory currentUICategory = UICategory.INVENTORY;
+        public PrototypeUICategory[] UIPages = null;
+
+        private PrototypePlayer player = null;
 
         private void Awake()
         {
@@ -54,11 +62,28 @@ namespace Prototype
 
             playerInput.playerInputs.Land.NextPage.performed += _ => NextPage();
             playerInput.playerInputs.Land.PreviousPage.performed += _ => PreviousPage();
+
+            player = playerInput.GetComponent<PrototypePlayer>();
+
+            for(int i = 0; i < UIPages.Length; i++)
+            {
+                UIPages[i].player = player;
+            }
         }
 
         private void Switch()
         {
-            PrototypeInventoryUIManager.instance.Switch();
+            if (player.playerState == PlayerState.INVENTORY)
+            {
+                UIPages[(int)currentUICategory].Close();
+                player.playerState = PlayerState.IDLE;
+            }
+            else
+            {
+                player.playerState = PlayerState.INVENTORY;
+                currentUICategory = UICategory.INVENTORY;
+                UIPages[(int)currentUICategory].Open();
+            }
         }
 
         private void Update()
@@ -82,6 +107,7 @@ namespace Prototype
             waitingToCloseHight = false;
             justCloseHight = true;
             pickupPanelHigh.SetActive(false);
+            player.playerState = PlayerState.IDLE;
         }
 
         public bool GetWaitingToCloseHight()
@@ -101,25 +127,26 @@ namespace Prototype
 
         private void NextPage()
         {
-            if (!isInInventory)
+            if (currentUICategory == UICategory.PLAYERSTATS)
                 return;
 
-            isInInventory = false;
+            UIPages[(int)currentUICategory].Close();
 
-            craftGameObject.SetActive(true);
-            inventoryGameObject.SetActive(false);
+            currentUICategory++;
+
+            UIPages[(int)currentUICategory].Open();
         }
 
         private void PreviousPage()
         {
-            if (isInInventory)
+            if (currentUICategory == UICategory.INVENTORY)
                 return;
 
-            isInInventory = true;
+            UIPages[(int)currentUICategory].Close();
 
-            craftGameObject.SetActive(false);
-            inventoryGameObject.SetActive(true);
-            PrototypeInventoryUIManager.instance.Refresh();
+            currentUICategory--;
+
+            UIPages[(int)currentUICategory].Open();
         }
 
         public void PickupObject(int ID, bool alreadySeen)
@@ -133,7 +160,7 @@ namespace Prototype
 
             if (alreadySeen)
             {
-                pickupText.text = item.name;
+                pickupText.text = PrototypeTraductionManager.instance.GetText(item.nameTradID);
 
                 if (pickupCoroutine != null)
                 {
@@ -144,8 +171,8 @@ namespace Prototype
             }
             else
             {
-                pickupTextHigh.text = item.name;
-                if(pickupHighCoroutine != null)
+                pickupTextHigh.text = PrototypeTraductionManager.instance.GetText(item.nameTradID);
+                if (pickupHighCoroutine != null)
                 {
                     StopCoroutine(pickupHighCoroutine);
                     pickupPanelHigh.SetActive(false);
@@ -166,6 +193,7 @@ namespace Prototype
         {
             yield return new WaitForSeconds(0.1f);
             pickupPanelHigh.SetActive(true);
+            player.playerState = PlayerState.UI;
             waitingToCloseHight = true;
         }
 
