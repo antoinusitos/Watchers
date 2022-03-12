@@ -18,6 +18,10 @@ namespace Prototype
 
         private bool isAttacking = false;
 
+        public Transform weaponHandSlot = null;
+        public Transform weaponRackSlot = null;
+        public Transform weapon = null;
+
         private void Awake()
         {
             sphereCollider = GetComponent<SphereCollider>();
@@ -77,7 +81,11 @@ namespace Prototype
             if (state)
             {
                 animator.SetTrigger("SwordDraw");
-                yield return new WaitForSeconds(1.4f);
+                yield return new WaitForSeconds(0.40f);
+                weapon.transform.parent = weaponHandSlot;
+                weapon.localPosition = Vector3.zero;
+                weapon.localRotation = Quaternion.identity;
+                yield return new WaitForSeconds(1.00f);
                 animator.SetBool("HasSword", true);
                 isSwordOut = true;
                 changingSwordState = false;
@@ -86,7 +94,11 @@ namespace Prototype
             {
                 animator.SetTrigger("SwordSheat");
                 animator.SetBool("HasSword", false);
-                yield return new WaitForSeconds(1.6f);
+                yield return new WaitForSeconds(1.14f);
+                weapon.transform.parent = weaponRackSlot;
+                weapon.localPosition = Vector3.zero;
+                weapon.localRotation = Quaternion.identity;
+                yield return new WaitForSeconds(0.46f);
                 isSwordOut = false;
                 changingSwordState = false;
             }
