@@ -34,7 +34,7 @@
 32;"Defence";"Defense"
 33;"Vigor";"Vigueur"
 34;"Intelligence";"Intelligence"
-35;;
+35;"Gold";"Gold"
 36;;
 37;;
 38;;

@@ -25,6 +25,8 @@ namespace Prototype
 
         private PrototypePlayer prototypePlayer = null;
 
+        public bool canMove = true;
+
         private void Awake()
         {
             rigidbody = GetComponent<Rigidbody>();
@@ -37,8 +39,6 @@ namespace Prototype
             playerModel = transform.GetChild(0);
             modelDirection = transform.position + Vector3.forward;
         }
-
-
         private void Update()
         {
             if (prototypePlayer.playerState == PlayerState.ATTACKING)
@@ -48,6 +48,9 @@ namespace Prototype
                 return;
 
             if (prototypePlayer.playerState == PlayerState.INVENTORY)
+                return;
+
+            if (!canMove)
                 return;
 
             Vector2 move = playerInput.playerInputs.Land.Move.ReadValue<Vector2>();
@@ -71,6 +74,16 @@ namespace Prototype
 
                 playerModel.LookAt(modelDirection);
             }
+        }
+
+        public void ForceMove(Vector2 move)
+        {
+            direction.x = move.x;
+            direction.z = move.y;
+
+            animator.SetFloat("PlayerSpeed", direction.magnitude);
+
+            rigidbody.MovePosition(rigidbody.position + direction * Time.deltaTime * speed * dashForce);
         }
 
         public Vector3 GetDirection()

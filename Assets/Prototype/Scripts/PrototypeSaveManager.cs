@@ -25,8 +25,18 @@ namespace Prototype
                 PlayerPrefs.SetInt("IntelligenceLevel", prototypePlayer.GetIntelligenceLevel());
 
                 PlayerPrefs.SetFloat("TotalTimePlayed", prototypePlayer.GetTotalTimePlayed());
+
+                PrototypeInventory prototypeInventory = prototypePlayer.GetComponent<PrototypeInventory>();
+                if(prototypeInventory != null)
+                {
+                    PlayerPrefs.SetInt("Gold", prototypeInventory.gold);
+                }
+
             }
+
             PlayerPrefs.Save();
+
+            PrototypeUIManager.instance.ShowSave();
         }
 
         public void Load()
@@ -43,6 +53,12 @@ namespace Prototype
                 prototypePlayer.SetIntelligenceLevel(PlayerPrefs.GetInt("IntelligenceLevel"));
 
                 prototypePlayer.SetTotalTimePlayed(PlayerPrefs.GetFloat("TotalTimePlayed"));
+
+                PrototypeInventory prototypeInventory = prototypePlayer.GetComponent<PrototypeInventory>();
+                if (prototypeInventory != null)
+                {
+                    prototypeInventory.gold = PlayerPrefs.GetInt("Gold");
+                }
             }
         }
     }

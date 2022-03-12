@@ -16,9 +16,16 @@ namespace Prototype
 
         private Transform localTransform = null;
 
+        private Vector3 startingOffset = Vector3.zero;
+
+        private void Awake()
+        { 
+            localTransform = transform;
+            startingOffset = offset;
+        }
+
         private void Start()
         {
-            localTransform = transform;
             player = prototypePlayerMovement.transform;
             localTransform.position = player.position + offset + prototypePlayerMovement.GetDirection() * predictionOnPlayerMovementForce;
         }
@@ -29,6 +36,11 @@ namespace Prototype
             {
                 localTransform.position = Vector3.Lerp(localTransform.position, player.position + offset + prototypePlayerMovement.GetDirection() * predictionOnPlayerMovementForce, speed * Time.deltaTime);
             }
+        }
+
+        public void ResetCameraOffset()
+        {
+            offset = startingOffset;
         }
     }
 }

@@ -45,6 +45,8 @@ namespace Prototype
 
         private PrototypePlayer player = null;
 
+        public GameObject saveGameObject = null;
+
         private void Awake()
         {
             instance = this;
@@ -211,6 +213,18 @@ namespace Prototype
             locationText.text = location;
             yield return new WaitForSeconds(locationShowTime);
             locationPanel.SetActive(false);
+        }
+
+        public void ShowSave()
+        {
+            saveGameObject.SetActive(true);
+            StartCoroutine(ShowSaveAnim());
+        }
+
+        private IEnumerator ShowSaveAnim()
+        {
+            yield return new WaitForSeconds(2);
+            saveGameObject.SetActive(false);
         }
     }
 }
